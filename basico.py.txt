@@ -1,0 +1,3 @@
+importamos el coso asi pip install djangorestframework
+
+hay que agregarlo a la parte de apps
