@@ -7,16 +7,37 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .models import Users
-from .serializers import Users_Serializer
+from .serializers import Users_Serializer,Test_user_serializer
+
 
 
 @api_view(["GET"]) #este api view nos permite hacer las respuestas en modo api, especificando que metodos aceptamos(puedne ser varios)
 def all_users(request):
-
+    
     users=Users.objects.all()
     serialized_users=Users_Serializer(users,many=True) #convertimos en json los objetos. Como son varios hay que ppner many=True
+    
+    #-------------test--------------------------------------
+    test_data={
+                "username":"emikel",
+                "email":"tutte@gmail.com"
+    }
 
+    test_user=Test_user_serializer(data=test_data)
+
+    if test_user.is_valid():
+        print("paso validaciones")
+    
+    else:
+        print(test_user.errors)#si no ponemos print no salen los errores
+        
+    #-----------------------------------------------
+    
     return Response(serialized_users.data,status=status.HTTP_200_OK)
+
+
+
+
 
 
 @api_view(["POST"])
@@ -29,6 +50,7 @@ def new_user(request):
     
     else:
         return Response(new_user.errors,status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(["GET"])
 def specify_user(request,pk):
