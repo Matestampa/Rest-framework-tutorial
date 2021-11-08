@@ -10,6 +10,9 @@ class Users(models.Model):
     email=models.CharField(max_length=50)
     ubicacion=models.CharField(max_length=50)
 
+    
+    def encrypt_pswd(self,text):
+        return text+" esmikel"
 
     def __str__(self):
         return f"{self.id} : {self.username}"

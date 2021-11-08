@@ -11,12 +11,12 @@ from .serializers import Users_Serializer,Test_user_serializer
 
 
 
-@api_view(["GET"]) #este api view nos permite hacer las respuestas en modo api, especificando que metodos aceptamos(puedne ser varios)
+@api_view(["GET"]) 
 def all_users(request):
     
     users=Users.objects.all()
-    serialized_users=Users_Serializer(users,many=True) #convertimos en json los objetos. Como son varios hay que ppner many=True
-    
+    serialized_users=Users_Serializer(users,many=True) 
+
     #-------------test--------------------------------------
     test_data={
                 "username":"emikel",
@@ -29,7 +29,7 @@ def all_users(request):
         print("paso validaciones")
     
     else:
-        print(test_user.errors)#si no ponemos print no salen los errores
+        print(test_user.errors)
         
     #-----------------------------------------------
     
@@ -42,10 +42,10 @@ def all_users(request):
 
 @api_view(["POST"])
 def new_user(request):
-    new_user=Users_Serializer(data=request.data)# AL poner data le estamos diciendo que haga uno nuevo
-
-    if new_user.is_valid(): #verificamos que todos los campos se cumplan como deben ser
-        new_user.save() #salvamos
+    new_user=Users_Serializer(data=request.data)
+    
+    if new_user.is_valid(): 
+        new_user.save()
         return Response({"message":"usuario creado correctamente"},status=status.HTTP_201_CREATED)
     
     else:
@@ -69,14 +69,14 @@ def update_user(request,pk):
     
     filtred_user=Users.objects.get(id=pk)
 
-    updated_user=Users_Serializer(instance=filtred_user,data=request.data)#al ponerle la instancia sabe que dbe reemplazar con lo que hay en data
+    updated_user=Users_Serializer(instance=filtred_user,data=request.data)
 
-    if updated_user.is_valid():#otra vez verificamos
+    if updated_user.is_valid():
         updated_user.save()
         return Response(updated_user.data)
     
     else:
-        return Repsonse(updated_user.errors)
+        return Response(updated_user.errors)
 
 
 @api_view(["DELETE"])
