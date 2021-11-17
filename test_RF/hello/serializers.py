@@ -20,15 +20,14 @@ class Test_user_serializer(serializers.ModelSerializer):
       
       def create(self,validated_data):
           #----password------------
-          new_user=Users.objects.create(**validated_data)#creamos un nuevo usuario y despues modifucamos el atributo especifico de password
-          new_user.password=new_user.encrypt_pswd(validated_data["password"])#le agregue una funcion propia en la clase del modelo
-          new_user.save() #salvamos
+          new_user=Users.objects.create(**validated_data)
+          new_user.password=new_user.encrypt_pswd(validated_data["password"])
+          new_user.save()
           
           return new_user
 
 
       def update(self,instance,validated_data): 
-          #-------password---------------
           updated_user=super().update(instance,validated_data)
           updated_user.password=updated_user.encrypt_pswd(validated_data["password"])
           updated_user.save()
